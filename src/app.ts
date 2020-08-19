@@ -17,6 +17,7 @@ export class TasklueApp {
     this.app = express();
     this.setViewEngine();
     this.setupMiddlewares();
+    this.setupStatics();
     this.setRoutes();
   }
 
@@ -30,7 +31,13 @@ export class TasklueApp {
       indentedSyntax: false, // true = .sass and false = .scss
       sourceMap: true
     }));
+  }
+
+  private setupStatics() {
     this.app.use(express.static(path.join(__dirname, 'public')));
+    this.app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')));
+    this.app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
+    this.app.use('/js', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/js')));
   }
 
   private setViewEngine() {
