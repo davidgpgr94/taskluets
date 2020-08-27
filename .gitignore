@@ -3,3 +3,4 @@ node_modules
 .data
 src/public/stylesheets/*.css
 src/public/stylesheets/*.css.map
+build

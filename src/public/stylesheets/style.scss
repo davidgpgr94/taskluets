@@ -1,11 +1,42 @@
 @import "node_modules/bootstrap/scss/bootstrap";
 
+html {
+  height: 100vh;
+}
+
 body {
-  padding: 50px;
+  height: 100%;
+  padding-top: 4.5rem;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: red;
-  background-color: blue;
+.vertical-input-groups .input-group:first-child {
+  padding-bottom: 0;
+}
+
+.vertical-input-groups .input-group:first-child * {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.vertical-input-groups .input-group:last-child {
+  padding-top: 0;
+}
+
+.vertical-input-groups .input-group:last-child *{
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.vertical-input-groups .input-group:not(:last-child):not(:first-child) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.vertical-input-groups .input-group:not(:last-child):not(:first-child) * {
+  border-radius: 0;
+}
+
+.vertical-input-groups .input-group:not(:first-child) * {
+  border-top: 0;
 }
