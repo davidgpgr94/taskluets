@@ -1,7 +1,7 @@
 import BaseController from "./base-controller";
 import { Request, Response } from "express";
 
-import auth from '../../common/middlewares/auth-middleware';
+import { ensureIsAuthenticated } from '../../common/middlewares/auth-middleware';
 
 class HomeController extends BaseController {
 
@@ -10,7 +10,7 @@ class HomeController extends BaseController {
   }
 
   public initRoutes() {
-    this._router.get(`${this.path}`, auth, this.getHome);
+    this._router.get(`${this.path}`, ensureIsAuthenticated, this.getHome);
   }
 
   getHome(req: Request, res: Response) {

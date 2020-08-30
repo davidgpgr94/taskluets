@@ -44,6 +44,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "@popperjs/core": "^2.4.4",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",

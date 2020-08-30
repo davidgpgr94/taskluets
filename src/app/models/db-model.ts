@@ -7,7 +7,7 @@ export const TO_HIDE_PROPERTY_CHARACTER: string = '__';
 
 export class DbModel {
 
-  readonly __tableName__: string;
+  private readonly __tableName__: string;
   readonly id?: string;
 
   constructor() {

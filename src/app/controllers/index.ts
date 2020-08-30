@@ -1,9 +1,9 @@
 import BaseController from "./base-controller"
-import LoginController from './login-controller';
+import AuthController from './auth-controller';
 import HomeController from "./home-controller";
 
 const CONTROLLERS: Array<BaseController> = [
-  new LoginController(),
+  new AuthController(),
   new HomeController(),
 ]
 

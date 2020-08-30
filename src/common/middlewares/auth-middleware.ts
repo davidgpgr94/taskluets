@@ -1,6 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 
-function ensureIsAuthenticated(req: Request, res: Response, next: NextFunction) {
+export function ensureIsNotAuthenticated(req: Request, res: Response, next: NextFunction) {
+  if (req.session && req.session.user) {
+    return res.redirect('/');
+  } else {
+    return next();
+  }
+}
+
+export function ensureIsAuthenticated(req: Request, res: Response, next: NextFunction) {
   if (!req.session) {
     return res.redirect('/login');
   } else {
@@ -12,5 +20,3 @@ function ensureIsAuthenticated(req: Request, res: Response, next: NextFunction) 
     }
   }
 }
-
-export default ensureIsAuthenticated;
