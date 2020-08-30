@@ -5,16 +5,17 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    {{#if user}}
     <ul class="navbar-nav mr-auto">
-      {{#if user}}
       <li class="nav-item">
         <a href="#" class="nav-link">Servicios</a>
       </li>
       <li class="nav-item">
         <a href="#" class="nav-link">Licencias</a>
       </li>
-      {{/if}}
     </ul>
+    {{/if}}
+    <hr class="bg-warning my-2">
     <ul class="navbar-nav">
       {{#if user}}
       <li class="nav-item dropdown">
@@ -24,13 +25,16 @@
           <div class="dropdown-divider"></div>
           <form action="/logout" method="post">
             {{{csrf_input_token}}}
-            <a onclick="this.parentNode.submit()" href="#" class="dropdown-item">Logout</a>
+            <a onclick="this.parentNode.submit()" href="#" class="dropdown-item">Salir</a>
           </form>
         </div>
       </li>
       {{else}}
-      <li class="nav-item">
-        <a href="/login" class="btn btn-outline-warning d-done d-md-inline-block">Login</a>
+      <li class="nav-item mx-2">
+        <a href="/signup" class="btn btn-warning d-done d-md-inline-block">Regístrate</a>
+      </li>
+      <li class="nav-item mx-2">
+        <a href="/login" class="btn btn-outline-warning d-done d-md-inline-block">Iniciar sesión</a>
       </li>
       {{/if}}
     </ul>
