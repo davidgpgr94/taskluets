@@ -11,6 +11,10 @@
     "copy:views": "copyfiles -u 1 src/app/views/** build",
     "start": "npm run build && node build/index.js",
     "clean": "rimraf ./build",
+    "migrate:status": "knex migrate:status --knexfile src/knexfile.ts",
+    "migrate:up": "knex migrate:up --knexfile src/knexfile.ts",
+    "migrate:down": "knex migrate:down --knexfile src/knexfile.ts",
+    "seed:run": "knex seed:run --knexfile src/knexfile.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": {
