@@ -53,5 +53,18 @@ body {
     top: 0.75rem;
     right: 0.5rem;
     cursor: pointer;
+    z-index: 100;
   }
+}
+
+.form-control {
+  &.is-invalid {
+    padding-right: 0 !important;
+    padding-left: $input-height-inner;
+    background-position: left $input-height-inner-quarter center;
+  }
+}
+
+.pt-20p {
+  padding-top: 17%;
 }

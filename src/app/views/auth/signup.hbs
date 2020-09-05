@@ -9,25 +9,38 @@
     <form action="/signup" method="post">
       {{{csrf_input_token}}}
       <div class="form-group">
-        <input type="text" name="login" id="login" class="form-control" placeholder="Login" minlength="7" maxlength="7" required="true">
+        <input type="text" name="login" id="login" class="form-control {{#if validationErrors.login}} is-invalid {{/if}}" placeholder="Login" minlength="7" maxlength="7" required="true" {{#if inputs.login}}value="{{inputs.login}}"{{/if}}>
+        {{#if validationErrors.login}}
+        <div class="invalid-feedback">{{validationErrors.login.msg}}</div>
+        {{/if}}
       </div>
       <div class="form-group">
-        <input type="email" name="email" id="email" class="form-control" placeholder="Email" required="true">
+        <input type="email" name="email" id="email" class="form-control {{#if validationErrors.email}} is-invalid {{/if}}" placeholder="Email" required="true" {{#if inputs.email}}value="{{inputs.email}}"{{/if}}>
+        {{#if validationErrors.email}}
+        <div class="invalid-feedback">{{validationErrors.email.msg}}</div>
+        {{/if}}
       </div>
       <div class="form-group input-with-field-icon">
-        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="true">
+        <input type="password" name="password" id="password" class="form-control {{#if validationErrors.password}} is-invalid {{/if}}" placeholder="Password" required="true" {{#if inputs.password}}value="{{inputs.password}}"{{/if}}>
         <div class="field-icon" data-toggle-from="fa-eye" data-toggle-to="fa-eye-slash">
           <span class="fas fa-eye"></span>
         </div>
+        {{#if validationErrors.password}}
+        <div class="invalid-feedback">{{validationErrors.password.msg}}</div>
+        {{/if}}
       </div>
       <div class="form-group input-with-field-icon">
-        <input type="password" name="password" id="password" class="form-control" placeholder="Repeat password" required="true">
+        <input type="password" name="repeat_password" id="repeat_password" class="form-control {{#if validationErrors.repeat_password}} is-invalid {{/if}}" placeholder="Repeat password" required="true" {{#if inputs.repeat_password}}value="{{inputs.repeat_password}}"{{/if}}>
         <div class="field-icon" data-toggle-from="fa-eye" data-toggle-to="fa-eye-slash">
           <span class="fas fa-eye"></span>
         </div>
+        {{#if validationErrors.repeat_password}}
+        {{log validationErrors}}
+        <div class="invalid-feedback">{{validationErrors.repeat_password.msg}}</div>
+        {{/if}}
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-block btn-primary">Registrarme</button>
+        <button type="submit" class="btn btn-block btn-secondary">Registrarme</button>
       </div>
     </form>
   </div>

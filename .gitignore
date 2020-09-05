@@ -4,3 +4,4 @@ node_modules
 src/public/stylesheets/*.css
 src/public/stylesheets/*.css.map
 build
+src/public/webfonts

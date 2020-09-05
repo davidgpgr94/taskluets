@@ -1,24 +1,37 @@
 
-<div class="row h-100 text-center align-items-center justify-content-center flex-column">
+<div class="row h-100 text-center align-items-center flex-column pt-20p">
   <div>
     <h1 class="h1">
-      Login page
+      Inicio sesión
     </h1>
   </div>
   <div class="px-auto w-50 mx-auto">
+    {{#if validationErrors.email}}
+    <div class="alert alert-danger">{{validationErrors.email.msg}}</div>
+    {{/if}}
+    {{#if validationErrors.password}}
+    <div class="alert alert-danger">{{validationErrors.password.msg}}</div>
+    {{/if}}
     <form action="/login" method="post">
       {{{csrf_input_token}}}
       <div class="form-group vertical-input-groups">
         <div class="input-group">
-          <input type="email" name="email" id="inputEmail" class="form-control" required="true" placeholder="Email">
+          <input type="email" name="email" id="inputEmail" class="form-control {{#if validationErrors.email}} is-invalid {{/if}}" required="true" placeholder="Email" {{#if inputs.email}}value="{{inputs.email}}"{{/if}}>
         </div>
         <div class="input-group">
-          <input type="password" name="password" id="inputPassword" class="form-control" required="true" placeholder="Contraseña">
+          <div class="input-with-field-icon w-100">
+            <div class="field-icon" data-toggle-from="fa-eye" data-toggle-to="fa-eye-slash">
+              <span class="fas fa-eye"></span>
+            </div>
+            <input type="password" name="password" id="inputPassword" class="form-control {{#if validationErrors.password}} is-invalid {{/if}}" required="true" placeholder="Contraseña" {{#if inputs.password}}value="{{inputs.password}}"{{/if}}>
+          </div>
         </div>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-block btn-primary">Iniciar sesión</button>
+        <button type="submit" class="btn btn-block btn-secondary">Iniciar sesión</button>
       </div>
     </form>
   </div>
 </div>
+
+<script src="/javascripts/toggle-input-password.js" type="text/javascript"></script>

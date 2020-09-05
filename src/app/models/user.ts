@@ -65,4 +65,8 @@ export class User extends DbModel {
     return this.active;
   }
 
+  public comparePassword(rawPassword: string): boolean {
+    return bcrypt.compareSync(rawPassword, this.hashedPassword);
+  }
+
 }
