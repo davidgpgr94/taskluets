@@ -14,7 +14,7 @@ export class DbModel {
     this.__tableName__ = this.constructor.name.toLowerCase();
   }
 
-  private getPropertyNames() {
+  public getPropertyNames() {
     let properties = Object.getOwnPropertyNames(this);
     properties = properties.filter(p => !this.isHiddenProperty(p));
     return properties;

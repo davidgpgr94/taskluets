@@ -4,7 +4,7 @@ import { User } from "../user";
 class UserRepository extends BaseRepository<User> {
 
   constructor() {
-    super('user');
+    super('user', User);
   }
 
 }

@@ -33,8 +33,7 @@ class AuthController extends BaseController {
       const user: User|undefined = await this.userRepository.findOne({
         email: req.body.email
       });
-      // TODO: el comparePassword falla porque userRepostory.findOne no devuelve un objeto User, sino que
-      // devuelve un JSON con los valores de la columnas de la tabla User
+
       if (user && user.comparePassword(req.body.password)) {
         req.session!.user = user;
         res.redirect('/');
