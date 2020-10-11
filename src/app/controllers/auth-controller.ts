@@ -7,7 +7,7 @@ import { validate, LOGIN_FORM_VALIDATIONS, SIGNUP_FORM_VALIDATIONS } from '../..
 import { ensureIsAuthenticated, ensureIsNotAuthenticated } from '../../common/middlewares/auth-middleware';
 import { User } from '../models/user';
 
-import UserRepository from '../models/repositories/user-repository';
+import { UserRepository } from '../models/repositories';
 
 class AuthController extends BaseController {
 
@@ -83,7 +83,7 @@ class AuthController extends BaseController {
         req.body.password
       );
       try {
-        await user.save();
+        await this.userRepository.save(user);
         return res.redirect('/login');
       } catch (e) {
         res.locals.errors = [e];
