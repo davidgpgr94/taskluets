@@ -1,9 +1,9 @@
 
 import bcrypt from 'bcrypt';
 import validator from 'validator';
-import { DbModel } from './db-model';
+import { BaseModel } from './base-model';
 
-export class User extends DbModel {
+export class User extends BaseModel {
 
   static LOGIN_LENGTH: number = 7;
 
