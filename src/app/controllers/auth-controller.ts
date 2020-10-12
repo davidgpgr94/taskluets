@@ -23,7 +23,7 @@ class AuthController extends BaseController {
     this._router.post(`${this.path}`, validate(LOGIN_FORM_VALIDATIONS), this.login.bind(this));
     this._router.post('/logout', ensureIsAuthenticated, this.logout);
     this._router.get('/signup', ensureIsNotAuthenticated, this.getSignup);
-    this._router.post('/signup', validate(SIGNUP_FORM_VALIDATIONS), ensureIsNotAuthenticated, this.signup);
+    this._router.post('/signup', validate(SIGNUP_FORM_VALIDATIONS), ensureIsNotAuthenticated, this.signup.bind(this));
   }
 
   private async login(req: Request, res: Response) {
@@ -87,6 +87,7 @@ class AuthController extends BaseController {
         return res.redirect('/login');
       } catch (e) {
         res.locals.errors = [e];
+        console.error(e);
         return res.render('auth/signup');
       }
     }

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import db from '../../../database';
 import { BaseModel } from '../base-model';
+import { handleDbError } from '../../../common/errors/db/handler';
 
 type FindQuery = { [column: string]: any };
 export type GenericObject = { [key: string]: any };
@@ -29,7 +30,14 @@ export abstract class BaseRepository<T extends BaseModel> {
   }
 
   public async find(query: FindQuery = {}): Promise<Array<T>> {
-    return await this.db(this.tableName).where(query).select('*');
+    let aryRes = await this.db(this.tableName).where(query).select('*');
+    let entities = [];
+    for (let i = 0; i < aryRes.length; i++) {
+      let entry = aryRes[i];
+      const entity = this.createInstance(entry);
+      entities.push(entity);
+    }
+    return entities;
   }
 
   public async findOne(query: FindQuery = {}): Promise<T|undefined> {
@@ -64,8 +72,12 @@ export abstract class BaseRepository<T extends BaseModel> {
         return false;
       }
 
-      const entriesUpdated = await this.db(this.tableName).update(toUpdate, ['id']).where({id: entity.id}) as unknown as number;
-      return entriesUpdated == 1;
+      try {
+        const entriesUpdated = await this.db(this.tableName).update(toUpdate).where({id: entity.id});
+        return entriesUpdated == 1;
+      } catch (err) {
+        throw handleDbError(err);
+      }
     } else {
       // New entry
       let toInsert: GenericObject = {};
@@ -76,8 +88,12 @@ export abstract class BaseRepository<T extends BaseModel> {
       }
       toInsert['id'] = uuidv4();
 
-      const res = await this.db(this.tableName).insert(toInsert, ['id']);
-      return res.length > 0;
+      try {
+        const res = await this.db(this.tableName).insert(toInsert);
+        return res.length > 0;
+      } catch (err) {
+        throw handleDbError(err);
+      }
     }
   }
 
