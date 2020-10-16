@@ -9,7 +9,12 @@ export async function seed(knex: Knex): Promise<void> {
   const repository: UserRepository = new UserRepository();
 
   // Inserts seed entries
-  let admin01: User = new User('admin01', 'admin01@example.com', '12345', true);
+  let admin01: User = new User({
+    login: 'admin01',
+    email: 'admin01@example.com',
+    rawPassword: '12345',
+    active: true
+  });
 
   await repository.save(admin01);
 };

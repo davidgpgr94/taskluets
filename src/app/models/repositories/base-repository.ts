@@ -4,16 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 import db from '../../../database';
 import { BaseModel } from '../base-model';
 import { handleDbError } from '../../../common/errors/db/handler';
+import { GenericObject, ObjectWithConstructor } from '../../../types';
 
-type FindQuery = { [column: string]: any };
-export type GenericObject = { [key: string]: any };
+export type FindQuery = { [column: string]: any };
 
 export abstract class BaseRepository<T extends BaseModel> {
   protected readonly tableName: string;
-  protected readonly __klass__: typeof BaseModel;
+  protected readonly __klass__: ObjectWithConstructor<T>;
   protected db: Knex;
 
-  constructor(tableName: string, klass: new(...args: any) => BaseModel) {
+  // constructor(tableName: string, klass: new(...args: any) => BaseModel) {
+  constructor(tableName: string, klass: ObjectWithConstructor<T>) {
     this.tableName = tableName;
     this.db = db;
     this.__klass__ = klass;
@@ -87,6 +88,8 @@ export abstract class BaseRepository<T extends BaseModel> {
         toInsert[prop] = entityAsGeneric[prop];
       }
       toInsert['id'] = uuidv4();
+      /* @ts-ignore: Needed to update source entity with the new id */
+      entity.id = toInsert['id'];
 
       try {
         const res = await this.db(this.tableName).insert(toInsert);
@@ -107,10 +110,9 @@ export abstract class BaseRepository<T extends BaseModel> {
   }
 
   private createInstance(source: GenericObject): T {
-    let instance = {};
+    let instance = new this.__klass__(source);
     Object.assign(instance, source);
-    Object.setPrototypeOf(instance, this.__klass__.prototype);
-    return instance as T;
+    return instance;
   }
 
 }

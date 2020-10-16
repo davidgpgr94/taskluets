@@ -13,15 +13,19 @@ export class User extends BaseModel {
   private salt: string;
   private active: boolean;
 
-  constructor(login: string, email: string, rawPassword: string, active: boolean = true) {
-    super();
-    if (!validator.isEmail(email)) throw new TypeError('Email bad format.');
-    if (!validator.isLength(login, { min: User.LOGIN_LENGTH, max: User.LOGIN_LENGTH})) throw new TypeError(`Login length must be of ${User.LOGIN_LENGTH}`);
-    this.login = login;
-    this.email = email;
+  constructor(opts: User.UserConstructorOpts) {
+    super(opts);
+    if (!validator.isEmail(opts.email)) throw new TypeError('Email bad format.');
+    if (!validator.isLength(opts.login, { min: User.LOGIN_LENGTH, max: User.LOGIN_LENGTH})) throw new TypeError(`Login length must be of ${User.LOGIN_LENGTH}`);
+    this.login = opts.login;
+    this.email = opts.email;
     this.salt = bcrypt.genSaltSync(5, 'b');
-    this.hashedPassword = this.hashPassword(rawPassword);
-    this.active = active;
+    if (!opts.rawPassword) {
+      this.hashedPassword = this.hashPassword(User.initialPassword());
+    } else {
+      this.hashedPassword = this.hashPassword(opts.rawPassword);
+    }
+    this.active = opts.active || true;
   }
 
   private hashPassword(rawPassword: string): string{
@@ -69,4 +73,18 @@ export class User extends BaseModel {
     return bcrypt.compareSync(rawPassword, this.hashedPassword);
   }
 
+  // TODO: Retrieve this value from a config
+  private static initialPassword(): string {
+    return '12345';
+  }
+
+}
+
+export namespace User {
+  export type UserConstructorOpts = {
+    login: string,
+    email: string,
+    rawPassword: string,
+    active?: boolean
+  } & BaseModel.BaseModelConstructorOpts;
 }

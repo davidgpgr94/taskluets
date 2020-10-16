@@ -77,11 +77,11 @@ class AuthController extends BaseController {
     if (res.locals.validationErrors) {
       return res.render('auth/signup', {inputs: req.body});
     } else {
-      const user = new User(
-        req.body.login,
-        req.body.email,
-        req.body.password
-      );
+      const user = new User({
+        login: req.body.login,
+        email: req.body.email,
+        rawPassword: req.body.password
+      });
       try {
         await this.userRepository.save(user);
         return res.redirect('/login');

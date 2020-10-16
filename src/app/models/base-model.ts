@@ -1,3 +1,4 @@
+import { GenericObject } from "../../types";
 
 export const TO_HIDE_PROPERTY_CHARACTER: string = '__';
 
@@ -5,8 +6,8 @@ export class BaseModel {
 
   readonly id?: string;
 
-  constructor(id?: string) {
-    this.id = id;
+  constructor(opts: BaseModel.BaseModelConstructorOpts) {
+    this.id = opts.id;
   }
 
   public getPropertyNames(): Array<string> {
@@ -20,4 +21,10 @@ export class BaseModel {
     return parts.length >= 3 && parts[0].length == 0 && parts[parts.length - 1].length == 0;
   }
 
+}
+
+export namespace BaseModel {
+  export type BaseModelConstructorOpts = {
+    id?: string
+  } & GenericObject;
 }
