@@ -13,7 +13,6 @@ export abstract class BaseRepository<T extends BaseModel> {
   protected readonly __klass__: ObjectWithConstructor<T>;
   protected db: Knex;
 
-  // constructor(tableName: string, klass: new(...args: any) => BaseModel) {
   constructor(tableName: string, klass: ObjectWithConstructor<T>) {
     this.tableName = tableName;
     this.db = db;
@@ -51,11 +50,12 @@ export abstract class BaseRepository<T extends BaseModel> {
     }
   }
 
-  public async save(entity: T): Promise<boolean> {
+  public async save(entity: T, trx?: Knex.Transaction): Promise<boolean> {
     let properties = entity.getPropertyNames();
+    let queryBuilder = trx || this.db;
     if (entity.id) {
       // Update entity
-      const res: GenericObject[] = await this.db(this.tableName).andWhere({ id: entity.id }).select(properties);
+      const res: GenericObject[] = await queryBuilder(this.tableName).andWhere({ id: entity.id }).select(properties);
       let entry = res[0];
       if (!entry) {
         throw new Error(`Unexpected error. Entry with id = ${entity.id} not found in ${this.tableName}`);
@@ -74,7 +74,7 @@ export abstract class BaseRepository<T extends BaseModel> {
       }
 
       try {
-        const entriesUpdated = await this.db(this.tableName).update(toUpdate).where({id: entity.id});
+        const entriesUpdated = await queryBuilder(this.tableName).update(toUpdate).where({id: entity.id});
         return entriesUpdated == 1;
       } catch (err) {
         throw handleDbError(err);
@@ -92,7 +92,7 @@ export abstract class BaseRepository<T extends BaseModel> {
       entity.id = toInsert['id'];
 
       try {
-        const res = await this.db(this.tableName).insert(toInsert);
+        const res = await queryBuilder(this.tableName).insert(toInsert);
         return res.length > 0;
       } catch (err) {
         throw handleDbError(err);
@@ -100,10 +100,11 @@ export abstract class BaseRepository<T extends BaseModel> {
     }
   }
 
-  async delete(entity: T): Promise<boolean> {
+  async delete(entity: T, trx?: Knex.Transaction): Promise<boolean> {
+    let queryBuilder = trx || this.db;
     let deleted: boolean = false;
     if (entity.id) {
-      let entriesDeleted = await this.db(this.tableName).where({ id: entity.id }).delete();
+      let entriesDeleted = await queryBuilder(this.tableName).where({ id: entity.id }).delete();
       deleted = entriesDeleted > 0;
     }
     return deleted;

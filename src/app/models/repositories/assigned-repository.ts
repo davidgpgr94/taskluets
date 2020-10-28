@@ -7,7 +7,7 @@ import { Task } from "../task";
 
 export class AssignedRepository extends BaseRepository<Assigned> {
 
-  public static TABLE_NAME: string = 'assigned';
+  public static readonly TABLE_NAME: string = 'assigned';
 
   private taskRepository: TaskRepository;
   private userRepository: UserRepository;
