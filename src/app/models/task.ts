@@ -3,14 +3,24 @@ import { User } from '.';
 
 export class Task extends BaseModel {
 
-  private title: string;
-  private description: string;
+  public title: string;
+  public description: string;
+  public startDate: Date;
+  public dueDate?: Date|null;
+  public status: Task.TaskStatus;
+  public createdOn: Date;
+  public updatedOn: Date;
   private __assignedTo__: Array<User> = [];
 
   constructor(opts: Task.TaskConstructorOpts) {
     super(opts);
     this.title = opts.title;
     this.description = opts.description;
+    this.startDate = opts.startDate;
+    this.dueDate = opts.dueDate;
+    this.status = opts.status || Task.TaskStatus.NEW;
+    this.createdOn = new Date();
+    this.updatedOn = new Date();
     this.__assignedTo__ = [];
   }
 
@@ -42,8 +52,19 @@ export class Task extends BaseModel {
 }
 
 export namespace Task {
+  export enum TaskStatus {
+    NEW = 'new',
+    PROGRESS = 'progress',
+    REJECTED = 'rejected',
+    FEEDBACK = 'feedback',
+    CLOSED = 'closed'
+  }
+
   export type TaskConstructorOpts = {
     title: string,
-    description: string
+    description: string,
+    startDate: Date,
+    dueDate?: Date|null,
+    status?: Task.TaskStatus
   } & BaseModel.BaseModelConstructorOpts;
 }

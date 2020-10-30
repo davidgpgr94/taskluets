@@ -29,6 +29,7 @@ export class TaskRepository extends BaseRepository<Task> {
         return currentAssignees.findIndex(a => a.userId == newAssigned.id!) == -1;
       });
       let trx: Transaction = await this.db.transaction();
+      entity.updatedOn = new Date();
       let entityUpdated: boolean = await super.save(entity, trx);
       let assigneesRemoved: boolean[] = Array(assigneesToRemove.length).fill(false);
       let assigneesCreated: boolean[] = Array(assigneesToCreate.length).fill(false);
@@ -54,6 +55,7 @@ export class TaskRepository extends BaseRepository<Task> {
     } else {
       // It's a new task
       let trx: Transaction = await this.db.transaction();
+      entity.updatedOn = new Date();
       let entityUpdated: boolean = await super.save(entity, trx);
       let assignedCreated: boolean = false;
       for (let i = 0; i < entity.assignees.length; i++) {
